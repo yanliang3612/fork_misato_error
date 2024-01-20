@@ -1,0 +1,21 @@
+[2024-01-19 21:00:18,889::train::INFO] Namespace(config='./configs/training.yml', device='cuda:1', exp_name='test1', logdir='./logs_diffusion', tag='', train_report_iter=200)
+[2024-01-19 21:00:18,889::train::INFO] {'data': {'name': 'pl', 'path': './data/crossdocked_v1.1_rmsd1.0_pocket10', 'split': '/mnt/workspace/dlly/targetdiff_mesh/data/icml_new_data_split.pt', 'transform': {'ligand_atom_mode': 'add_aromatic', 'random_rot': False}}, 'model': {'loss_mesh_weight': 1.0, 'model_mean_type': 'C0', 'beta_schedule': 'sigmoid', 'beta_start': 1e-07, 'beta_end': 0.002, 'v_beta_schedule': 'cosine', 'v_beta_s': 0.01, 'num_diffusion_timesteps': 1000, 'loss_v_weight': 100.0, 'sample_time_method': 'symmetric', 'time_emb_dim': 0, 'time_emb_mode': 'simple', 'center_pos_mode': 'protein', 'node_indicator': True, 'model_type': 'uni_o2', 'num_blocks': 1, 'num_layers': 9, 'hidden_dim': 128, 'n_heads': 16, 'edge_feat_dim': 4, 'num_r_gaussian': 20, 'knn': 32, 'num_node_types': 8, 'act_fn': 'relu', 'norm': True, 'cutoff_mode': 'knn', 'ew_net_type': 'global', 'num_x2h': 1, 'num_h2x': 1, 'r_max': 10.0, 'x2h_out_fc': False, 'sync_twoup': False}, 'train': {'seed': 2021, 'batch_size': 2, 'num_workers': 2, 'n_acc_batch': 2, 'max_iters': 10000000, 'val_freq': 100, 'pos_noise_std': 0.1, 'max_grad_norm': 8.0, 'bond_loss_weight': 1.0, 'optimizer': {'type': 'adam', 'lr': 0.0005, 'weight_decay': 0, 'beta1': 0.95, 'beta2': 0.999}, 'scheduler': {'type': 'plateau', 'factor': 0.6, 'patience': 10, 'min_lr': 1e-06}}}
+[2024-01-19 21:00:18,943::train::INFO] Loading dataset...
+[2024-01-19 21:00:18,957::train::INFO] Training: 99948 Validation: 100
+[2024-01-19 21:00:18,958::train::INFO] Building model...
+[2024-01-19 21:00:20,099::train::INFO] # trainable parameters: 2.8247 M
+[2024-01-19 21:00:22,782::train::INFO] [Train] Iter 1 | Loss 0.093940 (pos 0.025965 | v 0.001446 | mesh 0.017337) | Lr: 0.000500 | Grad Norm: 6.256425
+[2024-01-19 21:00:23,709::train::INFO] [Train] Iter 2 | Loss 4.934918 (pos 6.676070 | v 0.003003 | mesh 2.893440) | Lr: 0.000500 | Grad Norm: 119.498734
+[2024-01-19 21:00:24,375::train::INFO] [Train] Iter 3 | Loss 0.831555 (pos 0.692331 | v 0.003083 | mesh 0.662459) | Lr: 0.000500 | Grad Norm: 24.529705
+[2024-01-19 21:00:24,820::train::INFO] [Train] Iter 4 | Loss 0.826806 (pos 1.505278 | v 0.000122 | mesh 0.136166) | Lr: 0.000500 | Grad Norm: 1.656043
+[2024-01-19 21:00:25,621::train::INFO] [Train] Iter 5 | Loss 0.071816 (pos 0.038654 | v 0.000897 | mesh 0.015233) | Lr: 0.000500 | Grad Norm: 4.873789
+[2024-01-19 21:00:26,064::train::INFO] [Train] Iter 6 | Loss 1.438792 (pos 2.333723 | v 0.002626 | mesh 0.281214) | Lr: 0.000500 | Grad Norm: 5.200791
+[2024-01-19 21:00:26,686::train::INFO] [Train] Iter 7 | Loss 0.203649 (pos 0.090156 | v 0.003096 | mesh 0.007540) | Lr: 0.000500 | Grad Norm: 3.250217
+[2024-01-19 21:00:27,406::train::INFO] [Train] Iter 8 | Loss 0.915794 (pos 1.653217 | v 0.001186 | mesh 0.059742) | Lr: 0.000500 | Grad Norm: 1.134655
+[2024-01-19 21:00:29,117::train::INFO] [Train] Iter 9 | Loss 0.620485 (pos 1.074858 | v 0.001011 | mesh 0.065048) | Lr: 0.000500 | Grad Norm: 1.136323
+[2024-01-19 21:00:29,924::train::INFO] [Train] Iter 10 | Loss 0.257773 (pos 0.283361 | v 0.000998 | mesh 0.132378) | Lr: 0.000500 | Grad Norm: 2.816157
+[2024-01-19 21:00:30,360::train::INFO] [Train] Iter 11 | Loss 0.946003 (pos 1.582508 | v 0.001689 | mesh 0.140589) | Lr: 0.000500 | Grad Norm: 2.121811
+[2024-01-19 21:00:30,996::train::INFO] [Train] Iter 12 | Loss 0.406136 (pos 0.543469 | v 0.001272 | mesh 0.141631) | Lr: 0.000500 | Grad Norm: 6.487147
+[2024-01-19 21:00:31,415::train::INFO] [Train] Iter 13 | Loss 1.546453 (pos 2.832009 | v 0.001932 | mesh 0.067722) | Lr: 0.000500 | Grad Norm: 8.930101
+[2024-01-19 21:00:32,079::train::INFO] [Train] Iter 14 | Loss 0.955931 (pos 1.690673 | v 0.001981 | mesh 0.023059) | Lr: 0.000500 | Grad Norm: 2.198561
+[2024-01-19 21:00:32,536::train::INFO] Terminating...
