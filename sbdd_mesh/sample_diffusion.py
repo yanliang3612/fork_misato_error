@@ -232,6 +232,96 @@ def sample(ckpt_path,data_id,result_path):
     return result_path
 
 
+def sample_in_one_device(ckpt_path, result_path, device):
+    num_steps = 1000
+    num_samples = 10
+    seed=2021
+    sample_num_atoms = "prior"
+    center_pos_mode= "protein"
+    pos_only = False
+    batch_size = 10
+    logger = misc.get_logger('sampling')
+
+    misc.seed_all(seed)
+
+    # Load checkpoint
+    ckpt = torch.load(ckpt_path, map_location=device)
+    logger.info(f"Training Config: {ckpt['config']}")
+
+    # Transforms
+    protein_featurizer = trans.FeaturizeProteinAtom()
+    ligand_atom_mode = ckpt['config'].ligand_atom_mode
+    ligand_featurizer = trans.FeaturizeLigandAtom(ligand_atom_mode)
+    transform = Compose([
+        protein_featurizer,
+        ligand_featurizer,
+        trans.FeaturizeLigandBond(),
+    ])
+
+    # Load dataset
+    # dataset, subsets = get_dataset(
+    #     config=ckpt['config'].data,
+    #     transform=transform
+    # )
+
+    dataset, subsets = get_mesh_dataset(
+        name=ckpt['config'].data_name,
+        path=ckpt['config'].data_path,
+        split_path=ckpt['config'].data_split,
+        transform=transform
+    )
+
+    train_set, test_set = subsets['train'], subsets['val']
+    logger.info(f'Successfully load the dataset (size: {len(test_set)})!')
+
+    # Load model
+    model = ScorePosNet3D(
+        ckpt['config'],
+        protein_atom_feature_dim=protein_featurizer.feature_dim,
+        ligand_atom_feature_dim=ligand_featurizer.feature_dim
+    )
+    model.load_state_dict(ckpt['model'])
+    logger.info(f'Successfully load the model! {ckpt_path}')
+
+    # num_gpus = torch.cuda.device_count()
+    # processes = []
+    # for i in range(8):
+    #     gpu_id = i % num_gpus
+    #     p = multiprocessing.Process(target=sample_on_gpu, args=(
+    #     i, gpu_id, test_set, num_samples, batch_size, num_steps, pos_only, center_pos_mode, sample_num_atoms,
+    #     result_path, model))
+    #     p.start()
+    #     processes.append(p)
+    #
+    # for p in processes:
+    #     p.join()
+
+    for i in range(10):
+        data_id = i
+        data = test_set[data_id]
+        pred_pos, pred_v, pred_pos_traj, pred_v_traj, pred_v0_traj, pred_vt_traj, time_list = sample_diffusion_ligand(
+            model, data, num_samples,
+            batch_size=batch_size, device=device,
+            num_steps=num_steps,
+            pos_only=pos_only,
+            center_pos_mode=center_pos_mode,
+            sample_num_atoms=sample_num_atoms
+        )
+        result = {
+            'data': data,
+            'pred_ligand_pos': pred_pos,
+            'pred_ligand_v': pred_v,
+            'pred_ligand_pos_traj': pred_pos_traj,
+            'pred_ligand_v_traj': pred_v_traj,
+            'time': time_list
+        }
+        logger.info('Sample done!')
+
+        os.makedirs(result_path, exist_ok=True)
+        torch.save(result, os.path.join(result_path, f'result_{data_id}.pt'))
+
+    return result_path
+
 
 
 if __name__ == '__main__':

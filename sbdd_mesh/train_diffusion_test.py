@@ -21,7 +21,7 @@ from datasets import get_dataset, get_mesh_dataset
 from datasets.pl_data import FOLLOW_BATCH
 from models.molopt_score_model import ScorePosNet3D
 from pytorch_lightning import seed_everything
-from sample_diffusion import sample
+from sample_diffusion import sample, sample_in_one_device
 from evaluate_diffusion import evaluate
 import torch.multiprocessing as mp
 
@@ -197,7 +197,7 @@ def parser_args_sweep():
     parser.add_argument('--min_lr', type=int, default=1.e-6)
 
     # more
-    parser.add_argument('--device', type=str, default='cuda:7')
+    parser.add_argument('--device', type=str, default='cuda:0')
     parser.add_argument('--logdir', type=str, default='./logs_diffusion')
     parser.add_argument('--tag', type=str, default='')
     parser.add_argument('--train_report_iter', type=int, default=200)
@@ -684,8 +684,10 @@ def sweep_fun():
             test_ckpt_path = os.path.join(ckpt_dir, '%d.pt' % 200)
             result_path = os.path.join(ckpt_dir, f'{best_it}sample_outs')
             os.makedirs(result_path, exist_ok=False)
-            num_processes = 8
-            main_process(test_ckpt_path, result_path, num_processes)
+            sample_in_one_device(test_ckpt_path,result_path, args.device)
+            # num_processes = 8
+            # main_process(test_ckpt_path, result_path, num_processes)
+
             evaluate_results = evaluate(result_path)
             wandb.log(evaluate_results)
 
