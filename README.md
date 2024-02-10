@@ -8,7 +8,7 @@
 
 </div>
 
-### 安装环境我一直报错如下(Divin 2024.02.10), I am so sorry.
+### 安装环境我一直报错如下(Divin 2024.02.10).
 
 ```angular2html
 /home/pai/envs/misato/lib/python3.8/site-packages/torch_geometric/typing.py:47: UserWarning: An issue occurred while importing 'pyg-lib'. Disabling its usage. Stacktrace: libcudart.so.11.0: cannot open shared object file: No such file or directory
